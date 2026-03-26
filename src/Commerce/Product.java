@@ -3,24 +3,24 @@ package Commerce;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product { //개별상품관리 전자제품
 
-    List<Product> products = new ArrayList<>();
-
+//    List<Product> products = new ArrayList<>();
+//속
     private String name;
     private int price;
     private String info;
     private int amount;
-
+//생
     public Product(String name, int price, String info, int amount) {
         this.name = name;
         this.price = price;
         this.info = info;
         this.amount = amount;
 
-        products.add(this);
+//        products.add(this);
     }
-
+//기
     public String getName(){
         return name;
     }
@@ -33,10 +33,10 @@ public class Product {
     public int getAmount(){
         return amount;
     }
-    public List<Product> getList()
-    {
-        return products;
-    }
+//    public List<Product> getList()
+//    {
+//        return products;
+//    }
 
 
 
