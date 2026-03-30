@@ -37,6 +37,10 @@ public class Product { //개별상품관리 전자제품
 //    {
 //        return products;
 //    }
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
 
 
 
