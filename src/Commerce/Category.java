@@ -14,23 +14,28 @@ public class Category {
 
 
     //생
-    public Category(String categoryname){
+    public Category(String categoryname) {
         this.categoryname = categoryname;
     }
 
-    public String getCategory(){
+    public String getCategory() {
         return categoryname;
     }
 
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         return products;
     }
 
 
-    public void setProduct(Product product){
-    products.add(product);
+    public void setProduct(Product product) {
+        products.add(product);
     }
+
+
+    public void deleteProduct(Product product) {
+        products.remove(product);
     }
+}
 
 
 

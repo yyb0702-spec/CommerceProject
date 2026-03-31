@@ -33,6 +33,15 @@ public class Product { //개별상품관리 전자제품
     public int getAmount(){
         return amount;
     }
+
+    public void setPrice(int price)
+    {
+        this.price = price;
+    }
+    public void setInfo(String info)
+    {
+        this.info = info;
+    }
 //    public List<Product> getList()
 //    {
 //        return products;

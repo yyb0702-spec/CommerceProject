@@ -2,6 +2,7 @@ package Commerce;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //Cart 클래스를 관리한다 목록출력,
 public class Cartlist {
@@ -27,6 +28,37 @@ public class Cartlist {
     }
 
     public void showCartlist() {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("[ 장바구니 내역 ]");
+        for (int i = 0; i < cartlist.size(); i++) {
+            Cart product = cartlist.get(i);
+            System.out.printf("%10s | %,10d | %s | " + "수량 : " + "%,1d\n",
+                    i + 1 + "." + product.getName(),
+                    product.getPrice(),
+                    product.getInfo(),
+                    product.getAmount());
+
+            System.out.println("[ 총 주문 금액 ]");
+            System.out.println(totalPrice());
+        }
+        System.out.println("1.주문 확정 \t 2.메인으로 돌아가기");
+
+        int total = sc.nextInt();
+
+        if (total == 1) {
+
+            System.out.println("주문이 완료되었습니다! 총 금액 : " + totalPrice());
+            updateAmount();
+        }
+
+    }
+
+
+    public void removeCartlist() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("[ 장바구니 내역 ]");
         for (int i = 0; i < cartlist.size(); i++) {
             Cart product = cartlist.get(i);
             System.out.printf("%10s | %,10d | %s | " + "수량 : " + "%,1d\n",
@@ -35,12 +67,14 @@ public class Cartlist {
                     product.getInfo(),
                     product.getAmount());
         }
-    }
-
-    public void removeCartlist(int idx) {
-        cartlist.remove(idx - 1);
-        System.out.println("");
+        System.out.println("취소할 상품번호 선택 \t 0.메인으로 돌아가기");
+        int cartidx = sc.nextInt();
+        cartlist.remove(cartidx - 1);
+        System.out.println("취소 완료");
+        if (cartidx == 0) {
+            return;
         }
+    }
 
 
     public double totalPrice() {
