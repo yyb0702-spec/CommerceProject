@@ -44,13 +44,44 @@ public class Cartlist {
         }
         System.out.println("1.주문 확정 \t 2.메인으로 돌아가기");
 
-        int total = sc.nextInt();
-
+        int total = 0;
+        try {
+            total = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("잘못된입력입니다");
+            return;
+        }
         if (total == 1) {
 
-            System.out.println("주문이 완료되었습니다! 총 금액 : " + totalPrice());
+            Grade.showGrade();
+            int gradeidx = 0;
+            try {
+                gradeidx = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("잘못된 입력입니다");
+                sc.nextLine();
+                return;
+            }
+            Grade checkGrade = Grade.discountIdx(gradeidx);
+            if(checkGrade == null)
+            {
+                System.out.println("잘못된 등급입니다");
+                return;
+            }
+            System.out.println("주문이 완료되었습니다! 할인전 금액 : " + totalPrice());
+            double salePrice = (totalPrice() / 100) * checkGrade.getDiscount();
+            System.out.println("할인된 금액 : " + salePrice);
+            double finalPrice = totalPrice() - salePrice;
+            System.out.println("최종 결제 금액 : " + finalPrice);
+
             updateAmount();
+            sc.nextLine();
         }
+        else if(total == 2)
+        {
+            return;
+        }
+
 
     }
 
