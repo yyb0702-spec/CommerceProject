@@ -1,4 +1,4 @@
-package Commerce;
+package commerce;
 
 public class Customer {
 
@@ -7,7 +7,7 @@ public class Customer {
     private String u_grade;
 
 
-    public Customer(String u_name, String u_email,String u_grade){
+    public Customer(String u_name, String u_email, String u_grade){
         this.u_name = u_name;
         this.u_email = u_email;
         this.u_grade = u_grade;

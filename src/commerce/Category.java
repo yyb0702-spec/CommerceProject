@@ -1,4 +1,4 @@
-package Commerce;
+package commerce;
 
 
 import java.util.ArrayList;

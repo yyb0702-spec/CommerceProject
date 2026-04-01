@@ -1,7 +1,4 @@
-package Commerce;
-
-import java.util.ArrayList;
-import java.util.List;
+package commerce;
 
 //Cart안에 상품을 관리한다
 public class Cart {
@@ -10,7 +7,7 @@ public class Cart {
     private int p_amount;
 
 
-    public Cart(Product product,int p_amount)
+    public Cart(Product product, int p_amount)
     {
         this.product = product;
         this.p_amount = p_amount;

@@ -1,7 +1,4 @@
-package Commerce;
-
-import java.util.ArrayList;
-import java.util.List;
+package commerce;
 
 public class Product { //개별상품관리 전자제품
 
@@ -36,10 +33,14 @@ public class Product { //개별상품관리 전자제품
 
     public void setPrice(int price)
     {
+        if (price < 0) {
+            throw new IllegalArgumentException("가격은 0 이상이어야 합니다");
+        }
         this.price = price;
     }
     public void setInfo(String info)
     {
+
         this.info = info;
     }
 //    public List<Product> getList()
@@ -47,7 +48,10 @@ public class Product { //개별상품관리 전자제품
 //        return products;
 //    }
     public void setAmount(int amount)
-    {
+
+    {    if (amount < 0) {
+        throw new IllegalArgumentException("수량은 0보다 작을수 없습니다");
+    }
         this.amount = amount;
     }
 

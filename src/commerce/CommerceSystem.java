@@ -1,6 +1,5 @@
-package Commerce;
+package commerce;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -12,14 +11,14 @@ public class CommerceSystem {
     //속
     private List<Category> categories;
     private Admin admin;
-    private Cartlist cartlist;
+    private CartList cartlist;
     Scanner sc = new Scanner(System.in);
 
 
     //생
     public CommerceSystem(List<Category> categories) {
         this.categories = categories;
-        this.cartlist = new Cartlist();
+        this.cartlist = new CartList();
         this.admin = new Admin(categories, cartlist);
     }
 
@@ -51,9 +50,9 @@ public class CommerceSystem {
             //----------------------------------메뉴시작-----------------------------------------------------------------
             if (num > 0 && num <= categories.size()) {
                 Category catenum = categories.get(num - 1); // 인덱스 0부터시작 선택
-                Pmenu(catenum);
+                showProductMenu(catenum);
             } else if (num == 4 && useCart) {//장바구니확인
-                cartlist.showCartlist();
+                cartlist.displayCartlist();
             } else if (num == 5 && useCart) {       //장바구니확인
                 cartlist.removeCartlist();
             } else if ((num == 4 || num == 5) && cartlist.getCartlist().isEmpty()) {
@@ -62,7 +61,7 @@ public class CommerceSystem {
             //-----------------------------------------장바구니끝--------------------------------------------------------
             //-------------------------------------- 관리자 -------------------------------------------------------------
             else if (num == 6) {
-                if (admin.CheckPassword()) {
+                if (admin.checkPassword()) {
                     admin.startAdmin();
                 }
             } else if (num == 0) {
@@ -91,26 +90,39 @@ public class CommerceSystem {
                 });
     }
 
-    public void Pmenu(Category category) {
+    public void showProductMenu(Category category) {
 
         List<Product> products = category.getProducts();
 
         System.out.println("1.전체 상품 보기");
-        System.out.println("2.가격대별 필터링");
-        System.out.println("3.가격대별 필터링");
+        System.out.println("2.가격대별 필터링(100만원 이하)");
+        System.out.println("3.가격대별 필터링(100만원 초과)");
+        System.out.println("0.돌아가기");
 
-        int menunum = sc.nextInt();
+        int menunum = 0;
+        try {
+            menunum = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("입력값이 잘못되었습니다");
+            sc.nextLine();
+            return;
+        }
         sc.nextLine();
 
         if (menunum == 1) {
             showProducts(category);
         } else if (menunum == 2) {
-            upPrice(category);
-        } else if (menunum == 3) {
             downPrice(category);
+        } else if (menunum == 3) {
+            upPrice(category);
+        } else if (menunum == 0) {
+        return;}
+        else{
+            System.out.println("잘못된 입력값입니다");
+            return;
         }
-
         System.out.println("0.돌아가기");
+
         int num2 = 0;
         try {
             num2 = sc.nextInt();
@@ -130,6 +142,7 @@ public class CommerceSystem {
                 addCart = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("올바른 입력을해주세요");
+                sc.nextLine();
                 return;
             }
             if (addCart == 1) {
@@ -205,11 +218,19 @@ public class CommerceSystem {
     }
 
         public void addCart(Product product) {
-            System.out.println(product.getName() + "가 장바구니에 추가되었습니다");
-            cartlist.setCartList(product); //카트리스트에 이름,가격 저장
             if (product.getAmount() <= 1) {
                 System.out.println("수량이 얼마없습니다");//수량이 1이하이면 경고메세지 표기
+                System.out.println(product.getName() + "가 장바구니에 추가되었습니다");
+                cartlist.setCartList(product); //카트리스트에 이름,가격 저장
         }
+            if(product.getAmount() == 0 ){
+                System.out.println("품절된 상품 입니다");
+            }
+            else
+            {
+                System.out.println(product.getName() + "가 장바구니에 추가되었습니다");
+                cartlist.setCartList(product); //카트리스트에 이름,가격 저장
+            }
     }
 }
 
