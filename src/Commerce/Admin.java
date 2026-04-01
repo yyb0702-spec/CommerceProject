@@ -8,6 +8,7 @@ public class Admin {
     private static final String ADMINPASSWORD = "abc123";
     private List<Category> categories;
     private Cartlist cartlist;
+    Scanner sc = new Scanner(System.in);
 
     public Admin(List<Category> categories, Cartlist cartlist) {
         this.categories = categories;
@@ -15,7 +16,6 @@ public class Admin {
     }
 
     public boolean CheckPassword() {
-        Scanner sc = new Scanner(System.in);
         int check = 0;
         while (check < 3) {
             System.out.println("관리자 비밀번호를 입력해주세요 : ");
@@ -37,7 +37,6 @@ public class Admin {
 
     public void startAdmin() {
 
-        Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("[ 관리자모드 ]");
             System.out.println("1. 상품 추가");
@@ -46,7 +45,14 @@ public class Admin {
             System.out.println("4. 전체 상품 현황");
             System.out.println("0. 메인으로 돌아가기");
 
-            int adminChoice = sc.nextInt();
+            int adminChoice = 0;
+            try {
+                adminChoice = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("잘못된 입력값입니다");
+                sc.nextLine();
+                continue;
+            }
             sc.nextLine();
 
             switch (adminChoice) {
@@ -57,7 +63,7 @@ public class Admin {
                     updateProduct();
                     break;
                 case 3:
-                    updateProduct();
+                    deleteProduct();
                     break;
                 case 4:
                     showAllProduct();
@@ -72,7 +78,6 @@ public class Admin {
     }
 
     public void addProduct() {
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("어느 카테고리에 상품을 추가하시겠습니까?");
         for (int i = 0; i < categories.size(); i++) { //List 카테고리
@@ -92,18 +97,42 @@ public class Admin {
 
         Category addpro = categories.get(category - 1); // 인덱스 0부터시작 선택
         System.out.println("상품명을 입력해주세요 : ");
-        String name = sc.nextLine();
+        String name = null;
+        try {
+            name = sc.nextLine();
+        } catch (Exception e) {
+            System.out.println("올바른 상품명을 입력해주세요");
+            return;
+        }
 
 
         System.out.println("가격을 입력해주세요 : ");
-        int price = sc.nextInt();
+        int price = 0;
+        try {
+            price = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("올바른 상품가격을 입력해주세요");
+            return;
+        }
         sc.nextLine();
 
         System.out.println("상품 설명을 입력해주세요 : ");
-        String info = sc.nextLine();
+        String info = null;
+        try {
+            info = sc.nextLine();
+        } catch (Exception e) {
+            System.out.println("올바른 상품설명을 입력해주세요");
+            return;
+        }
 
         System.out.println("재고수량을 입력해주세요 : ");
-        int amount = sc.nextInt();
+        int amount = 0;
+        try {
+            amount = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("올바른 재고 수량을 입력해주세요");
+            return;
+        }
 
         Product newproduct = new Product(name, price, info, amount);
 
@@ -113,7 +142,6 @@ public class Admin {
     }
 
     public void deleteProduct() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("어느 카테고리에 상품을 삭제하시겠습니까?");
         for (int i = 0; i < categories.size(); i++) { //List 카테고리
             Category category = categories.get(i);
@@ -121,7 +149,14 @@ public class Admin {
             System.out.println(
                     i + 1 + "." + category.getCategory()); //category 이름 getter
         }
-        int selectcategory = sc.nextInt();
+        int selectcategory = 0;
+        try {
+            selectcategory = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("입력이 잘못되었습니다");
+            sc.nextLine();
+            return;
+        }
         sc.nextLine();
         Category catenum = categories.get(selectcategory - 1); // 인덱스 0부터시작 선택
         List<Product> products = catenum.getProducts();
@@ -136,7 +171,14 @@ public class Admin {
                     product.getPrice(),
                     product.getInfo());
         }
-        int num3 = sc.nextInt();
+        int num3 = 0;
+        try {
+            num3 = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("입력이 잘못되었습니다");
+            sc.nextLine();
+            return;
+        }
         sc.nextLine();
         if (num3 > 0 && num3 <= products.size()) {
             Product product = products.get(num3 - 1); //List에서 선택된 product의 정보 출력 index 0 부터 시작
@@ -156,9 +198,8 @@ public class Admin {
                 int num5 = sc.nextInt();
                 sc.nextLine();
                 if (num5 == 1) {
-                    categories.remove(product);
-                    List<Cart> bag = cartlist.getCartlist();
-                    bag.remove(product);
+                    products.remove(product);
+                    deletecart(product);
                 }
             }
         }
@@ -168,58 +209,79 @@ public class Admin {
 
 
     public void updateProduct() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("수정할 상품명을 입력해주세요 : ");
         String fixPname = sc.nextLine();
-        for (Category category : categories) {
-            for (Product product : category.getProducts()) {
-                if (product.getName().equals(fixPname)) {
-                    System.out.println("현재 상품 정보 : " + product.getName() +
-                            product.getPrice() + product.getInfo() + product.getAmount());
-                }
+        Product find = categories.stream()// 상위 리스트
+                .flatMap(category -> category.getProducts().stream())//하위 리스트
+                .filter(product -> product.getName().equals(fixPname))//변수fixPname과 같은걸찾는다
+                .findFirst() //반환
+                .orElse(null); //없으면 null
+        if (find != null) {
+            System.out.println("찾은 상품: " + find.getName());
+        } else {
+            System.out.println("상품을 찾을 수 없습니다");
+        }
                 System.out.println("수정할 항목을 선택해주세요 : ");
                 System.out.println("1. 가격");
                 System.out.println("2. 정보");
                 System.out.println("3. 수량");
-                int fixnum = sc.nextInt();
-                sc.nextLine();
+        int fixnum = 0;
+        try {
+            fixnum = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("잘못된 입력입니다");
+            sc.nextLine();
+            return;
+        }
+        sc.nextLine();
 
                 System.out.println("수정할 항목을 선택해주세요 : ");
                 if (fixnum == 1) {
-                    System.out.println("현재 가격 : " + product.getPrice());
+                    System.out.println("현재 가격 : " + find.getPrice());
                     System.out.println("새로운 가격을 입력해주세요 : ");
                     int newPrice = sc.nextInt();
                     sc.nextLine();
-                    product.setPrice(newPrice);
+                    find.setPrice(newPrice);
                 }
                 if (fixnum == 2) {
-                    System.out.println("현재 정보 : " + product.getInfo());
+                    System.out.println("현재 정보 : " + find.getInfo());
                     System.out.println("새로운 정보을 입력해주세요 : ");
                     String newInfo = sc.nextLine();
-                    product.setInfo(newInfo);
+                    find.setInfo(newInfo);
                 }
                 if (fixnum == 3) {
-                    System.out.println("현재 정보 : " + product.getAmount());
+                    System.out.println("현재 정보 : " + find.getAmount());
                     System.out.println("새로운 정보을 입력해주세요 : ");
                     int newAmount = sc.nextInt();
                     sc.nextLine();
-                    product.setAmount(newAmount);
+                    find.setAmount(newAmount);
+                }
+                else{
+                    System.out.println("잘못된 입력입니다");
                 }
             }
-        }
-    }
 
     public void showAllProduct() {
         for (Category category : categories) {
             System.out.println(category.getCategory());
             for (Product product : category.getProducts()) {
-                System.out.printf("%-15s | %,10d | %s%n",
+                System.out.printf("%-25s | %,10d | %s%n",
                         product.getName(),
                         product.getPrice(),
                         product.getInfo());
             }
         }
 
+    }
+
+    public void deletecart(Product product)
+    {
+        List<Cart> bag = cartlist.getCartlist();
+        for(Cart cart : bag)
+        {if(cart.getName().equals(product.getName())){
+            bag.remove(product);
+        }
+        }
     }
 
 }
