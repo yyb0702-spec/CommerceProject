@@ -39,7 +39,7 @@ Java를 사용하여 만든 콘솔 기반 커머스 플랫폼입니다.
 CommerceSystem 실행
 
 
-commerce/
+## commerce/
 
 #### CommerceSystem.java
 - 전체 프로그램 흐름 관리
