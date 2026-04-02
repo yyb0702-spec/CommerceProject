@@ -50,10 +50,13 @@ public class CartList {
             sc.nextLine();
             return;
         }
+        sc.nextLine();
         if (total == 1) {
             if(orderCart()){
             updateAmount();
+            sc.nextLine();
             }
+            System.out.println("ENTER 입력시 메뉴로 돌아갑니다");
             sc.nextLine();
         } else if (total == 2) {
             return;
@@ -77,9 +80,12 @@ public class CartList {
             sc.nextLine();
             return;
         }
+        sc.nextLine();
         if(cartidx > 0 && cartidx <= cartlist.size()) {
             cartlist.remove(cartidx - 1);
             System.out.println("취소 완료");
+            System.out.println("ENTER 입력시 메인으로 돌아갑니다");
+            sc.nextLine();
         }
         else if(cartidx == 0 )
         {

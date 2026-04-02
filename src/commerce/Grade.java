@@ -28,7 +28,7 @@ public enum Grade {
         System.out.println("고객 등급을 입력해주세요");
         for (int i = 0; i < Grade.values().length; i++) {
             Grade grade = Grade.values()[i];
-            System.out.println(i + 1 + "." + grade.getGrade() + ":" + grade.getDiscount() + "할인");
+            System.out.println(i + 1 + ". " + grade.getGrade() + " : " + grade.getDiscount() + "% 할인");
         }
     }
 

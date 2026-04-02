@@ -126,6 +126,8 @@ public class Admin {
         selectedCategory.setProduct(newproduct);
 
         System.out.println("상품이 성공적으로 추가되었습니다!");
+        System.out.println("Enter 입력시 관리자모드로 돌아갑니다");
+        sc.nextLine();
     }
 
     public void deleteProduct() {
@@ -199,6 +201,7 @@ public class Admin {
                             products.remove(product);
                             deleteCart(product);
                             System.out.println("선택 하신 제품" + product.getName() + "이 삭제되었습니다");
+                            System.out.println("ENTER 입력시 관리자 모드로 돌아갑니다");
                             sc.nextLine();
                             break;
                         } else if (num5 == 2) {
@@ -209,7 +212,7 @@ public class Admin {
                         }
                     }
                     if (num4 == 2) {
-                        break;
+                        return;
                     }
                 }
             }
@@ -262,11 +265,16 @@ public class Admin {
             }
             sc.nextLine();
             find.setPrice(newPrice);
+            System.out.println(find.getName() + " 의 가격이 " + newPrice + " 로 수정되었습니다.");
+            System.out.println("ENTER 입력시 관리자모드로 돌아갑니다");
+            sc.nextLine();
         } else if (fixnum == 2) {
             System.out.println("현재 정보 : " + find.getInfo());
             System.out.println("새로운 정보를 입력해주세요 : ");
             String newInfo = sc.nextLine();
-            find.setInfo(newInfo);
+            System.out.println(find.getName() + " 의 정보가 " + newInfo + " 로 수정되었습니다.");
+            System.out.println("ENTER 입력시 관리자모드로 돌아갑니다");
+            sc.nextLine();
         } else if (fixnum == 3) {
             System.out.println("현재 수량 : " + find.getAmount());
             System.out.println("새로운 수량을 입력해주세요 : ");
@@ -280,6 +288,9 @@ public class Admin {
             }
             sc.nextLine();
             find.setAmount(newAmount);
+            System.out.println(find.getName() + " 의 수량이가 " + newAmount + " 로 수정되었습니다.");
+            System.out.println("ENTER 입력시 관리자모드로 돌아갑니다");
+            sc.nextLine();
         } else {
             System.out.println("잘못된 입력입니다");
         }
