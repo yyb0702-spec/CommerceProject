@@ -2,7 +2,6 @@ package commerce;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CommerceSystem {
@@ -77,18 +76,9 @@ public class CommerceSystem {
 
 
     public void showCategory(List<Category> categories) {//상위메뉴
-
-//        for (int i = 0; i < categories.size(); i++) { //List 카테고리
-//            Category category = categories.get(i);
-//
-//            System.out.println(
-//                    i + 1 + "." + category.getCategory()); //category 이름 getter
-//        }
-
         IntStream.range(0, categories.size()) //스트림은 index를 주지않는다
-                .forEach(i -> {
-                    System.out.println((i + 1) + "." + categories.get(i).getCategory());
-                });
+                .forEach(i ->
+                    System.out.println((i + 1) + "." + categories.get(i).getCategory()));
     }
 
     public void showProductMenu(Category category) {
@@ -151,9 +141,6 @@ public class CommerceSystem {
                 addCart(product);
                 sc.nextLine();
             }
-            else if(addCart == 2) {
-            return;
-            }
         }
     }
 
@@ -163,14 +150,6 @@ public class CommerceSystem {
 
         System.out.println("[ 실시간 커머스 플랫폼 - " + category.getCategory() + " ]");
 
-//        for (int i = 0; i < products.size(); i++) {
-//            Product product = products.get(i);
-//
-//            System.out.printf("%-15s | %,10d | %s%n",
-//                    (i + 1) + "." + product.getName(),
-//                    product.getPrice(),
-//                    product.getInfo());
-//        }
         IntStream.range(0, products.size()) //스트림은 index를 주지않는다
                 .forEach(i -> {
                     Product product = products.get(i);
@@ -184,7 +163,7 @@ public class CommerceSystem {
     public void upPrice(Category category) {
         List<Product> upPrice = category.getProducts().stream()
                 .filter(product -> product.getPrice() >= 1000000)//변수fixPname과 같은걸찾는다
-                .collect(Collectors.toList());
+                .toList();
 
         if(upPrice.isEmpty())
         {
@@ -206,7 +185,7 @@ public class CommerceSystem {
     public void downPrice(Category category) {
         List<Product> downPrice = category.getProducts().stream()
                 .filter(product -> product.getPrice() <= 1000000)//변수fixPname과 같은걸찾는다
-                .collect(Collectors.toList());
+                .toList();
         if(downPrice.isEmpty())
         {
             System.out.println("해당되는 상품이 없습니다");
@@ -241,7 +220,7 @@ public class CommerceSystem {
                 System.out.println("ENTER 입력시 메뉴로 돌아갑니다");
                 sc.nextLine();
         }
-            if(product.getAmount() == 0 ){
+            else if(product.getAmount() == 0 ){
                 System.out.println("품절된 상품 입니다");
                 System.out.println("ENTER 입력시 메뉴로 돌아갑니다");
                 sc.nextLine();

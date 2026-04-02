@@ -82,9 +82,9 @@ public class Admin {
 
         System.out.println("어느 카테고리에 상품을 추가하시겠습니까?");
         IntStream.range(0, categories.size()) //스트림은 index를 주지않는다
-                .forEach(i -> {
-                    System.out.println((i + 1) + "." + categories.get(i).getCategory());
-                });
+                .forEach(i ->
+                        System.out.println((i + 1) + "." + categories.get(i).getCategory())
+                );
         int category = sc.nextInt();
         sc.nextLine();
 
@@ -105,6 +105,10 @@ public class Admin {
             sc.nextLine();
             return;
         }
+        if (price < 0) {
+            System.out.println("음수는 가격에 들어갈수없습니다");
+            return;
+        }
         sc.nextLine();
 
         System.out.println("상품 설명을 입력해주세요 : ");
@@ -117,6 +121,10 @@ public class Admin {
         } catch (Exception e) {
             System.out.println("올바른 재고 수량을 입력해주세요");
             sc.nextLine();
+            return;
+        }
+        if (amount < 0) {
+            System.out.println("음수는 재고에 들어갈수없습니다");
             return;
         }
 
@@ -133,9 +141,9 @@ public class Admin {
     public void deleteProduct() {
         System.out.println("어느 카테고리에 상품을 삭제하시겠습니까?");
         IntStream.range(0, categories.size()) //스트림은 index를 주지않는다
-                .forEach(i -> {
-                    System.out.println((i + 1) + "." + categories.get(i).getCategory());
-                });
+                .forEach(i ->
+                        System.out.println((i + 1) + "." + categories.get(i).getCategory())
+                );
         int selectcategory = 0;
         try {
             selectcategory = sc.nextInt();
@@ -218,7 +226,6 @@ public class Admin {
             }
         } else {
             System.out.println("잘못된 카테고리 번호입니다");
-            return;
         }
     }
 
@@ -264,7 +271,13 @@ public class Admin {
                 return;
             }
             sc.nextLine();
-            find.setPrice(newPrice);
+            try {
+                find.setPrice(newPrice);
+            } catch (IllegalArgumentException e) {
+                System.out.println("가격은 0 이상이여야합니다");
+                sc.nextLine();
+                return;
+            }
             System.out.println(find.getName() + " 의 가격이 " + newPrice + " 로 수정되었습니다.");
             System.out.println("ENTER 입력시 관리자모드로 돌아갑니다");
             sc.nextLine();
@@ -287,7 +300,13 @@ public class Admin {
                 return;
             }
             sc.nextLine();
-            find.setAmount(newAmount);
+            try {
+                find.setAmount(newAmount);
+            } catch (IllegalArgumentException e) {
+                System.out.println("수량은 0 이상이여야합니다");
+                sc.nextLine();
+                return;
+            }
             System.out.println(find.getName() + " 의 수량이가 " + newAmount + " 로 수정되었습니다.");
             System.out.println("ENTER 입력시 관리자모드로 돌아갑니다");
             sc.nextLine();
@@ -298,27 +317,20 @@ public class Admin {
 
     public void showAllProduct() {
 
-        categories.stream() // 리스트카테고리 스트림
-                .forEach(category -> { //출력
-                    System.out.println(category.getCategory());
-                    category.getProducts().stream() //프로덕트 스트림
-                            .forEach(product -> System.out.printf("%-25s | %,10d | %s%n", //출력
+        categories.forEach(category -> { // 리스트카테고리 스트림
+            System.out.println(category.getCategory());
+
+            category.getProducts()
+                    .forEach(product ->  //프로덕트 스트림
+                            System.out.printf("%-25s | %,10d | %s%n",
                                     product.getName(),
                                     product.getPrice(),
                                     product.getInfo())
-                            );
-                });
+                    );
+        });
         System.out.println("엔터를 누르면 관리자메뉴로 복귀합니다");
         sc.nextLine();
-//        for (Category category : categories) {
-//            System.out.println(category.getCategory());
-//            for (Product product : category.getProducts()) {
-//                System.out.printf("%-25s | %,10d | %s%n",
-//                        product.getName(),
-//                        product.getPrice(),
-//                        product.getInfo());
-//            }
-//        }
+
 
     }
 

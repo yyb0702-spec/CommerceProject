@@ -58,8 +58,6 @@ public class CartList {
             }
             System.out.println("ENTER 입력시 메뉴로 돌아갑니다");
             sc.nextLine();
-        } else if (total == 2) {
-            return;
         }
     }
 
@@ -90,7 +88,6 @@ public class CartList {
         else if(cartidx == 0 )
         {
             System.out.println("메인으로 돌아갑니다");
-            return;
         }
         else{
             System.out.println("잘못된 입력입니다");
